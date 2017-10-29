@@ -1,78 +1,88 @@
 #include <stdio.h>
-#define MAXLINE 1000
 
-/* Oscar Pallazhco, Jorge Rodríguez*/
+#define MAXLINE 1000 /* maximum input line length */
 
 int getline2(char line[], int maxline);
-int modificar1(char s[]);
-void modificar2(char s[], int c);
 void copy(char to[], char from[]);
-void menu();
+int cuenta(char cadena[]);
+int cuenta_digitos(char cadena[]);
 
-int main(){
-	int len;
-	int max;
-	int f1;
-	char line[MAXLINE];
-	char longest[MAXLINE];
-	int n; /*codigo ascii del caracter a eliminar*/
-
-	max = 0;
+/* print the longest input line */
+main()
+{
+	int len; /* current line length */
+ 	int max; /* maximum length seen so far */
+	char line[MAXLINE]; /* current input line */
+	char longest[MAXLINE]; /* longest line saved here */
+	int opcion; /*valor que ingresará el usuario para el menú*/
+ 	max = 0;
 	while ((len = getline2(line, MAXLINE)) > 0)
-		if (len > max) {
-			max = len;
-			copy(longest, line);
-		}
-	if (max > 0)
-		printf("%s", longest);
-	f1 = modificar1(longest);
-	printf("función1: %d\n",f1);
-	
-	printf("original: %s", longest);
-	modificar2(longest,103);
-	printf("función2: %s\n", longest);
-	
-	return 0;
+    		if (len > max) {
+            		max = len;
+		        copy(longest, line);
+     		}
+	if (max > 0) /* there was a line */
+        	printf("La cadena mas larga es: %s", longest);
+
+	printf("\t\tMenú de Opciones: \n");
+	printf("\t1. Contar caracteres de la cadena\n");
+	printf("\t2. Contar digitos de la cadena\n");
+	printf("\t3. Salir\n");
+	scanf("%d",&opcion);
+	while(!(opcion >= 1 && opcion <= 3)){
+		printf("opción no válida\n");		
+		scanf("%d",&opcion);
+	}
+	if(opcion == 1)
+	        printf("La cadena tiene %d caracteres\n", cuenta(longest)-1);
+	else if(opcion == 2)
+	        printf("La cadena tiene %d dígitos\n", cuenta_digitos(longest));
+    return 0;
 }
 
-int getline2(char s[],int lim){
+/* getline2: read a line into s, return length */
+int getline2(char s[],int lim)
+{
 	int c, i;
-
 	for (i=0; i < lim-1 && (c=getchar())!=EOF && c!='\n'; ++i)
-		s[i] = c;
+    		s[i] = c;
 	if (c == '\n') {
-		s[i] = c;
-		++i;
-	}
+    		s[i] = c;
+    		++i;
+    	}
 	s[i] = '\0';
 	return i;
 }
 
+/* copy: copy 'from' into 'to'; assume to is big enough */
 void copy(char to[], char from[]){
 	int i;
 	i = 0;
 	while ((to[i] = from[i]) != '\0')
-	++i;
-}
-
-int modificar1(char s[]){
-	/*contar numero de caracteres de un cadena de caracteres*/
-	int i;
-	i=0;
-	while (s[i] != '\0')
 		++i;
-	return i-1;
 }
 
-
-void modificar2(char s[], int c){
-int i, j;
-	for (i = j = 0; s[i] != '\0'; i++)
-		if (s[i] != c)
-			s[j++] = s[i];
-	s[j] = '\0';
+/* cuenta: cuenta los caracteres de la cadena seleccionada */
+int cuenta(char cadena[]){
+	int i;
+	i = 0;
+	while (cadena[i] != '\0')
+		++i;
+	return i;
 }
 
+/* cuenta_digitos: cuenta los digitos de la cadena seleccionada */
+int cuenta_digitos(char cadena[]){
+	int i, digitos;
+	i = 0;
+	digitos = 0;
+	while (cadena[i] != '\0'){
+		if (cadena[i] >= '0' && cadena[i] <= '9')
+			++digitos;
+		++i;
+	}
+	return digitos;
+}
 
 
 
